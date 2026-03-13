@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking Confirmed | IndiaTours</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --navy-dark: #0a192f;
+            --navy-slate: #112240;
+            --orange-primary: #ff4d00;
+            --success-green: #00cf8d;
+        }
+
+        body { 
+            background-color: var(--navy-dark); 
+            color: white; 
+            font-family: 'Poppins', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+        }
+
+        .conf-card {
+            background: var(--navy-slate);
+            border-radius: 30px;
+            border: 1px solid rgba(255,255,255,0.05);
+            overflow: hidden;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+        }
+
+        /* Animated Checkmark */
+        .success-animation { margin: 20px auto; }
+        .checkmark {
+            width: 80px; height: 80px;
+            border-radius: 50%;
+            display: block;
+            stroke-width: 2;
+            stroke: var(--success-green);
+            stroke-miterlimit: 10;
+            box-shadow: inset 0px 0px 0px var(--success-green);
+            animation: fill .4s ease-in-out .4s forwards, scale .3s ease-in-out .9s both;
+            position: relative; top: 5px; right: 5px; margin: 0 auto;
+        }
+        @keyframes fill { 100% { box-shadow: inset 0px 0px 0px 40px var(--success-green); } }
+        @keyframes scale { 0%, 100% { transform: none; } 50% { transform: scale3d(1.1, 1.1, 1); } }
+
+        .receipt-body {
+            background: rgba(255,255,255,0.02);
+            border-radius: 20px;
+            border: 1px dashed rgba(255,255,255,0.1);
+        }
+
+        .booking-id-badge {
+            background: rgba(255, 77, 0, 0.1);
+            color: var(--orange-primary);
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            display: inline-block;
+        }
+
+        .detail-label { color: #8892b0; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; }
+        .detail-value { font-weight: 500; }
+
+        @media print {
+            .no-print { display: none; }
+            body { background: white; color: black; }
+            .conf-card { box-shadow: none; border: 1px solid #ccc; }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-6 col-md-8">
+                
+                <div class="conf-card p-4 p-md-5 text-center">
+                    
+                    <div class="success-animation">
+                        <svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+                            <circle class="checkmark__circle" cx="26" cy="26" r="25" fill="none"/>
+                            <path class="checkmark__check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8" stroke="white" stroke-width="4"/>
+                        </svg>
+                    </div>
+
+                    <h2 class="fw-bold mt-4">Booking Confirmed!</h2>
+                    <p class="text-white-50 mb-4">A confirmation email has been sent to your inbox.</p>
+                    
+                    <div class="booking-id-badge mb-5" id="displayID">
+                        REF: IT-2026-0000
+                    </div>
+
+                    <div class="receipt-body p-4 text-start">
+                        <div class="row g-4">
+                            <div class="col-6">
+                                <p class="detail-label mb-1">Traveler</p>
+                                <p class="detail-value mb-0" id="displayName">Nitin Kumar</p>
+                            </div>
+                            <div class="col-6">
+                                <p class="detail-label mb-1">Package</p>
+                                <p class="detail-value mb-0" id="displayPackage">Goa Bliss</p>
+                            </div>
+                            <div class="col-6">
+                                <p class="detail-label mb-1">Date</p>
+                                <p class="detail-value mb-0" id="displayDate">March 25, 2026</p>
+                            </div>
+                            <div class="col-6">
+                                <p class="detail-label mb-1">Amount Paid</p>
+                                <p class="detail-value mb-0 text-orange fw-bold" id="displayTotal">₹5,000</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-5 d-flex flex-column flex-md-row gap-3 justify-content-center no-print">
+                        <a href="index.html" class="btn btn-navy-slate border-navy-light text-white px-4 py-3 rounded-pill">
+                            <i class="fa-solid fa-house me-2"></i> Home
+                        </a>
+                        <button onclick="window.print()" class="btn btn-orange px-4 py-3 rounded-pill fw-bold shadow">
+                            <i class="fa-solid fa-print me-2"></i> Download Receipt
+                        </button>
+                    </div>
+
+                    <div class="mt-4 no-print">
+                        <small class="text-white-50">Need help? <a href="contact.html" class="text-orange text-decoration-none">Contact Support</a></small>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Extract parameters from URL
+        const params = new URLSearchParams(window.location.search);
+        
+        // Populate UI
+        document.getElementById('displayName').innerText = params.get('name') || "Valued Traveler";
+        document.getElementById('displayPackage').innerText = params.get('package') || "Explorer Package";
+        document.getElementById('displayDate').innerText = params.get('date') || "TBD";
+        
+        // Handle Price Display
+        const rawTotal = params.get('total') || "0";
+        document.getElementById('displayTotal').innerText = "₹" + parseInt(rawTotal).toLocaleString();
+
+        // Generate and display dynamic Reference ID
+        const ref = params.get('ref') || "IT-" + Math.floor(100000 + Math.random() * 900000);
+        document.getElementById('displayID').innerText = "REF: " + ref;
+    </script>
+
+</body>
+</html>

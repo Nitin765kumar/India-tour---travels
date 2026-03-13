@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secure Booking | IndiaTours</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    
+    <style>
+        :root {
+            --navy-dark: #0a192f;
+            --navy-slate: #112240;
+            --orange-primary: #ff4d00;
+        }
+
+        body { background-color: var(--navy-dark); color: white; font-family: 'Poppins', sans-serif; }
+
+        .booking-card {
+            background: var(--navy-slate);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 20px;
+        }
+
+        .form-control, .form-select {
+            background: rgba(10, 25, 47, 0.5);
+            border: 1px solid rgba(255,255,255,0.1);
+            color: white;
+            transition: 0.3s;
+        }
+
+        .form-control:focus, .form-select:focus {
+            background: rgba(10, 25, 47, 0.8);
+            border-color: var(--orange-primary);
+            color: white;
+            box-shadow: none;
+        }
+
+        /* Modern Step Tracker */
+        .step-wrapper { position: relative; display: flex; justify-content: space-between; margin-bottom: 40px; }
+        .step-wrapper::before {
+            content: ""; position: absolute; top: 20px; left: 0; width: 100%; height: 2px;
+            background: rgba(255,255,255,0.1); z-index: 1;
+        }
+        .step-item { position: relative; z-index: 2; text-align: center; width: 100px; }
+        .step-dot {
+            width: 40px; height: 40px; background: var(--navy-slate); border: 2px solid rgba(255,255,255,0.2);
+            border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 10px;
+            font-weight: bold; transition: 0.3s;
+        }
+        .step-item.active .step-dot { background: var(--orange-primary); border-color: var(--orange-primary); box-shadow: 0 0 15px rgba(255, 77, 0, 0.4); }
+        .step-item.active p { color: var(--orange-primary); font-weight: 600; }
+
+        .summary-card {
+            background: rgba(255, 255, 255, 0.03);
+            border-left: 4px solid var(--orange-primary);
+            border-radius: 15px;
+        }
+        
+        .trust-badge { font-size: 0.75rem; color: #8892b0; text-transform: uppercase; letter-spacing: 1px; }
+    </style>
+</head>
+
+<body>
+
+    <nav class="navbar navbar-expand-lg fixed-top navbar-dark bg-navy-dark border-bottom border-navy-light">
+        <div class="container">
+            <a class="navbar-brand fw-bold fs-3" href="index.html">
+                INDIA<span class="text-orange">TOURS</span>
+            </a>
+            <div class="ms-auto d-flex align-items-center">
+                <span class="text-white-50 small me-2 d-none d-md-inline"><i class="fa-solid fa-lock text-success me-1"></i> Secure 256-bit Encryption</span>
+            </div>
+        </div>
+    </nav>
+
+    <div style="height: 100px;"></div>
+
+    <section class="py-5">
+        <div class="container">
+            <div class="row justify-content-center mb-5">
+                <div class="col-lg-8">
+                    <div class="step-wrapper">
+                        <div class="step-item active">
+                            <div class="step-dot">1</div>
+                            <p class="small mb-0">Travelers</p>
+                        </div>
+                        <div class="step-item">
+                            <div class="step-dot">2</div>
+                            <p class="small mb-0 text-white-50">Payment</p>
+                        </div>
+                        <div class="step-item">
+                            <div class="step-dot">3</div>
+                            <p class="small mb-0 text-white-50">Confirm</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row g-4">
+                <div class="col-lg-8">
+                    <div class="booking-card p-4 p-md-5">
+                        <div class="d-flex align-items-center mb-4">
+                            <div class="bg-orange p-2 rounded-3 me-3">
+                                <i class="fa-solid fa-user-check text-white"></i>
+                            </div>
+                            <h3 class="fw-bold mb-0">Traveler Details</h3>
+                        </div>
+
+                        <form action="payment.html" method="GET">
+                            <div class="row g-4">
+                                <div class="col-md-6">
+                                    <label class="form-label small text-white-50 fw-bold">FIRST NAME</label>
+                                    <input type="text" class="form-control py-3" placeholder="Enter first name" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label small text-white-50 fw-bold">LAST NAME</label>
+                                    <input type="text" class="form-control py-3" placeholder="Enter last name" required>
+                                </div>
+                                <div class="col-md-12">
+                                    <label class="form-label small text-white-50 fw-bold">EMAIL ADDRESS</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-transparent border-end-0 text-white-50"><i class="fa-solid fa-envelope"></i></span>
+                                        <input type="email" class="form-control py-3 border-start-0" placeholder="your@email.com" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label small text-white-50 fw-bold">PHONE NUMBER</label>
+                                    <input type="tel" class="form-control py-3" placeholder="+91 00000 00000" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label small text-white-50 fw-bold">SELECT PACKAGE</label>
+                                    <select class="form-select py-3" id="packageSelect">
+                                        <option value="150">Agra Heritage Tour - $150</option>
+                                        <option value="199">Goa Beach Bliss - $199</option>
+                                        <option value="250">Manali Snow Peaks - $250</option>
+                                        <option value="299">Kerala Backwaters - $299</option>
+                                        <option value="350">Kashmir Paradise - $350</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label small text-white-50 fw-bold">TRAVEL DATE</label>
+                                    <input type="date" class="form-control py-3" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label small text-white-50 fw-bold">NO. OF TRAVELERS</label>
+                                    <input type="number" class="form-control py-3" value="1" min="1" id="travelerCount">
+                                </div>
+
+                                <div class="col-12 pt-3">
+                                    <button type="submit" class="btn btn-orange w-100 py-3 fw-bold rounded-pill shadow-lg">
+                                        PROCEED TO SECURE PAYMENT <i class="fa-solid fa-arrow-right ms-2"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="col-lg-4">
+                    <div class="sticky-top" style="top: 100px; z-index: 1;">
+                        <div class="booking-card p-4">
+                            <h5 class="fw-bold mb-4">Booking Summary</h5>
+                            
+                            <div class="summary-card p-3 mb-3">
+                                <div class="d-flex justify-content-between mb-2">
+                                    <span class="text-white-50 small">Base Fare</span>
+                                    <span id="baseFare">$150.00</span>
+                                </div>
+                                <div class="d-flex justify-content-between mb-2">
+                                    <span class="text-white-50 small">Taxes & Fees (10%)</span>
+                                    <span id="taxAmount">$15.00</span>
+                                </div>
+                                <hr class="opacity-10">
+                                <div class="d-flex justify-content-between">
+                                    <span class="fw-bold">Total Amount</span>
+                                    <span class="fw-bold text-orange fs-5" id="totalPrice">$165.00</span>
+                                </div>
+                            </div>
+
+                            <div class="p-3 border border-navy-light rounded-3 mb-4">
+                                <div class="d-flex align-items-center mb-2">
+                                    <i class="fa-solid fa-shield-check text-success me-2"></i>
+                                    <span class="small fw-bold">Free Cancellation</span>
+                                </div>
+                                <p class="small text-white-50 mb-0">Cancel up to 48 hours before the trip for a full refund.</p>
+                            </div>
+
+                            <div class="text-center">
+                                <p class="trust-badge mb-3">Guaranteed Safe Checkout</p>
+                                <div class="d-flex justify-content-center gap-3 opacity-50">
+                                    <i class="fa-brands fa-cc-visa fa-2x"></i>
+                                    <i class="fa-brands fa-cc-mastercard fa-2x"></i>
+                                    <i class="fa-brands fa-cc-apple-pay fa-2x"></i>
+                                    <i class="fa-brands fa-google-pay fa-2x"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="py-5 border-top border-navy-light">
+        <div class="container text-center">
+            <p class="text-white-50 mb-0">© 2026 IndiaTours Portal | Managed by Nitin Kumar</p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // Simple logic to update the summary sidebar
+        const packageSelect = document.getElementById('packageSelect');
+        const travelerCount = document.getElementById('travelerCount');
+        const baseFareDisplay = document.getElementById('baseFare');
+        const taxDisplay = document.getElementById('taxAmount');
+        const totalDisplay = document.getElementById('totalPrice');
+
+        function updatePrice() {
+            const pricePerPerson = parseInt(packageSelect.value);
+            const travelers = parseInt(travelerCount.value);
+            const base = pricePerPerson * travelers;
+            const tax = base * 0.10;
+            const total = base + tax;
+
+            baseFareDisplay.innerText = `$${base.toFixed(2)}`;
+            taxDisplay.innerText = `$${tax.toFixed(2)}`;
+            totalDisplay.innerText = `$${total.toFixed(2)}`;
+        }
+
+        packageSelect.addEventListener('change', updatePrice);
+        travelerCount.addEventListener('input', updatePrice);
+    </script>
+</body>
+</html>

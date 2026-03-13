@@ -1,0 +1,117 @@
+/* --- MASTER THEME VARIABLES --- */
+:root {
+    --navy-deep: #0a192f;      /* Deep background */
+    --navy-slate: #112240;     /* Card background */
+    --navy-light: #233554;     /* Borders & Hover states */
+    --orange-primary: #ff4d00; /* Main Action Color */
+    --orange-accent: #ff9933;  /* Saffron Highlight */
+    --text-bright: #ccd6f6;    /* Main Text */
+    --text-dim: #8892b0;       /* Muted/Secondary Text */
+}
+
+/* --- Global Setup --- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: var(--navy-deep);
+    color: var(--text-bright);
+    line-height: 1.6;
+    overflow-x: hidden;
+}
+
+/* --- Reusable Utilities --- */
+.text-orange { color: var(--orange-primary) !important; }
+.text-saffron { color: var(--orange-accent) !important; }
+.bg-navy-slate { background-color: var(--navy-slate) !important; }
+
+/* --- Fixed Navbar Styling --- */
+#mainNav {
+    padding: 15px 0;
+    transition: 0.4s ease;
+    background: rgba(10, 25, 47, 0.95);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.nav-link {
+    color: var(--text-bright) !important;
+    font-weight: 500;
+    margin: 0 10px;
+    transition: 0.3s;
+}
+
+.nav-link:hover, .nav-link.active {
+    color: var(--orange-primary) !important;
+}
+
+/* --- Advanced Card System --- */
+.custom-card {
+    background: var(--navy-slate);
+    border: 1px solid var(--navy-light);
+    border-radius: 20px;
+    overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.custom-card:hover {
+    transform: translateY(-12px);
+    border-color: var(--orange-primary);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+}
+
+/* --- Buttons --- */
+.btn-orange {
+    background: var(--orange-primary);
+    color: white;
+    border: none;
+    padding: 12px 30px;
+    border-radius: 50px;
+    font-weight: 600;
+    transition: 0.3s;
+}
+
+.btn-orange:hover {
+    background: #e64500;
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(255, 77, 0, 0.3);
+    color: white;
+}
+
+/* --- Founder & Section Decor --- */
+.founder-img-v2 {
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+    border: 5px solid var(--navy-deep);
+    outline: 3px solid var(--orange-accent);
+    border-radius: 50%;
+}
+
+.welcome-divider {
+    width: 80px;
+    height: 4px;
+    background: var(--orange-accent);
+    margin: 20px 0;
+    border-radius: 10px;
+}
+
+/* --- Animations --- */
+[data-reveal] {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: 1s all ease;
+}
+
+[data-reveal].active {
+    opacity: 1;
+    transform: translateY(0);
+}

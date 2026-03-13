@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Premium Tour Packages | IndiaTours</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --navy-deep: #0a192f;
+            --navy-slate: #112240;
+            --orange: #ff9933;
+            --slate: #8892b0;
+            --light-slate: #ccd6f6;
+            --white: #e6f1ff;
+        }
+
+        body {
+            background-color: var(--navy-deep);
+            color: var(--slate);
+            font-family: 'Poppins', sans-serif;
+            overflow-x: hidden;
+        }
+
+        .text-orange { color: var(--orange) !important; }
+        
+        /* --- NAVIGATION --- */
+        .navbar {
+            background: rgba(10, 25, 47, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 153, 51, 0.1);
+            padding: 15px 0;
+        }
+        .nav-link { color: var(--light-slate) !important; font-weight: 500; transition: 0.3s; }
+        .nav-link:hover, .nav-link.active { color: var(--orange) !important; }
+
+        /* --- HERO SECTION --- */
+        .pkg-hero {
+            padding: 160px 0 80px;
+            background: linear-gradient(to bottom, rgba(10, 25, 47, 0.8), var(--navy-deep)), 
+                        url('https://images.unsplash.com/photo-1524492412937-b28074a5d7da?q=80&w=2000');
+            background-size: cover;
+            background-position: center;
+            text-align: center;
+        }
+
+        /* --- PACKAGE CARDS --- */
+        .package-card {
+            background: var(--navy-slate);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            height: 100%;
+        }
+        .package-card:hover {
+            transform: translateY(-12px);
+            border-color: rgba(255, 153, 51, 0.4);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+
+        .img-container {
+            height: 220px;
+            overflow: hidden;
+            position: relative;
+        }
+        .img-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: 0.6s;
+        }
+        .package-card:hover .img-container img { transform: scale(1.1); }
+
+        .price-tag {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: var(--orange);
+            color: var(--navy-deep);
+            font-weight: 700;
+            padding: 6px 18px;
+            border-radius: 50px;
+            box-shadow: 0 4px 15px rgba(255, 153, 51, 0.3);
+        }
+
+        .card-content { padding: 25px; }
+        .pkg-title { color: var(--white); font-weight: 700; margin-bottom: 12px; }
+        .pkg-meta { font-size: 0.85rem; margin-bottom: 15px; display: flex; gap: 15px; }
+        .pkg-meta i { color: var(--orange); }
+
+        .btn-book {
+            border: 1px solid var(--orange);
+            color: var(--orange);
+            border-radius: 50px;
+            padding: 10px;
+            width: 100%;
+            font-weight: 600;
+            transition: 0.3s;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+        .btn-book:hover {
+            background: var(--orange);
+            color: var(--navy-deep);
+        }
+
+        /* --- EXPANDED FOOTER --- */
+        .footer-expanded {
+            background: #060d1a;
+            padding: 90px 0 30px;
+            border-top: 1px solid rgba(255, 153, 51, 0.2);
+            margin-top: 100px;
+        }
+        .footer-heading {
+            color: var(--white);
+            font-weight: 700;
+            margin-bottom: 25px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+        .footer-heading::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 40px;
+            height: 2px;
+            background: var(--orange);
+        }
+        .footer-link {
+            color: var(--slate);
+            text-decoration: none;
+            display: block;
+            margin-bottom: 12px;
+            transition: 0.3s;
+            font-size: 0.95rem;
+        }
+        .footer-link:hover {
+            color: var(--orange);
+            padding-left: 8px;
+        }
+        .social-circle {
+            width: 45px;
+            height: 45px;
+            background: var(--navy-slate);
+            color: var(--orange);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            margin-right: 12px;
+            font-size: 1.2rem;
+            transition: 0.3s;
+            border: 1px solid rgba(255, 153, 51, 0.1);
+        }
+        .social-circle:hover {
+            background: var(--orange);
+            color: var(--navy-deep);
+            transform: rotate(360deg);
+        }
+        .newsletter-input {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255, 153, 51, 0.2);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 50px 0 0 50px;
+        }
+        .newsletter-btn {
+            background: var(--orange);
+            border: none;
+            padding: 0 25px;
+            border-radius: 0 50px 50px 0;
+            font-weight: 700;
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav class="navbar navbar-expand-lg fixed-top navbar-dark">
+        <div class="container">
+            <a class="navbar-brand fw-bold fs-3" href="index.html">INDIA<span class="text-orange">TOURS</span></a>
+            <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navMain"><span class="navbar-toggler-icon"></span></button>
+            <div class="collapse navbar-collapse" id="navMain">
+                <ul class="navbar-nav ms-auto align-items-center">
+                    <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="destinations.html">Destinations</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="#">Packages</a></li>
+                    <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
+                    <li class="nav-item ms-lg-4"><a href="booking.html" class="btn px-4 rounded-pill fw-bold" style="background:var(--orange); color:var(--navy-deep);">Book Now</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <header class="pkg-hero">
+        <div class="container">
+            <h6 class="text-orange fw-bold text-uppercase mb-3" style="letter-spacing: 4px;">Premium Collections</h6>
+            <h1 class="display-3 fw-bold text-white mb-4">India Tour <span class="text-orange">Packages</span></h1>
+            <p class="lead text-light opacity-75 mx-auto" style="max-width: 700px;">From the spiritual riverbanks of Varanasi to the snow-capped Himalayan peaks, discover experiences curated just for you.</p>
+        </div>
+    </header>
+
+    <section class="py-5">
+        <div class="container">
+            <div class="row g-4">
+                
+                <div class="col-lg-4 col-md-6">
+                    <div class="package-card">
+                        <div class="img-container">
+                            <img src="https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?w=800">
+                            <div class="price-tag">$199</div>
+                        </div>
+                        <div class="card-content">
+                            <h4 class="pkg-title">Goa Beach Bliss</h4>
+                            <div class="pkg-meta">
+                                <span><i class="far fa-clock"></i> 4D/3N</span>
+                                <span><i class="fas fa-map-marker-alt"></i> North Goa</span>
+                            </div>
+                            <p class="small text-secondary mb-4">Experience the perfect blend of Portuguese culture and tropical beaches.</p>
+                            <a href="booking.html" class="btn-book">Select Package</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6">
+                    <div class="package-card">
+                        <div class="img-container">
+                            <img src="https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?w=800">
+                            <div class="price-tag">$299</div>
+                        </div>
+                        <div class="card-content">
+                            <h4 class="pkg-title">Kerala Backwaters</h4>
+                            <div class="pkg-meta">
+                                <span><i class="far fa-clock"></i> 6D/5N</span>
+                                <span><i class="fas fa-map-marker-alt"></i> Alleppey</span>
+                            </div>
+                            <p class="small text-secondary mb-4">Float through the tranquil backwaters in a traditional luxury houseboat.</p>
+                            <a href="booking.html" class="btn-book">Select Package</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6">
+                    <div class="package-card">
+                        <div class="img-container">
+                            <img src="https://images.unsplash.com/photo-1564507592333-c60657eea523?w=800">
+                            <div class="price-tag">$150</div>
+                        </div>
+                        <div class="card-content">
+                            <h4 class="pkg-title">Agra Heritage</h4>
+                            <div class="pkg-meta">
+                                <span><i class="far fa-clock"></i> 2D/1N</span>
+                                <span><i class="fas fa-map-marker-alt"></i> Taj Mahal</span>
+                            </div>
+                            <p class="small text-secondary mb-4">A timeless journey to the symbol of love and Mughal architectural marvels.</p>
+                            <a href="booking.html" class="btn-book">Select Package</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6">
+                    <div class="package-card">
+                        <div class="img-container">
+                            <img src="https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?w=800">
+                            <div class="price-tag">$250</div>
+                        </div>
+                        <div class="card-content">
+                            <h4 class="pkg-title">Manali Snow Peaks</h4>
+                            <div class="pkg-meta">
+                                <span><i class="far fa-clock"></i> 5D/4N</span>
+                                <span><i class="fas fa-map-marker-alt"></i> Himachal</span>
+                            </div>
+                            <p class="small text-secondary mb-4">Breathtaking Himalayan views and adrenaline-pumping mountain adventures.</p>
+                            <a href="booking.html" class="btn-book">Select Package</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6">
+                    <div class="package-card">
+                        <div class="img-container">
+                            <img src="img/ayodhya.jpg">
+                            <div class="price-tag">$120</div>
+                        </div>
+                        <div class="card-content">
+                            <h4 class="pkg-title">Ayodhya Divine</h4>
+                            <div class="pkg-meta">
+                                <span><i class="far fa-clock"></i> 2D/1N</span>
+                                <span><i class="fas fa-map-marker-alt"></i> Ram Temple</span>
+                            </div>
+                            <p class="small text-secondary mb-4">A spiritual pilgrimage to the holy city of Lord Ram and Sarayu Aarti.</p>
+                            <a href="booking.html" class="btn-book">Select Package</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6">
+                    <div class="package-card">
+                        <div class="img-container">
+                            <img src="https://images.unsplash.com/photo-1598324789736-4861f89564a0?w=800">
+                            <div class="price-tag">$350</div>
+                        </div>
+                        <div class="card-content">
+                            <h4 class="pkg-title">Kashmir Paradise</h4>
+                            <div class="pkg-meta">
+                                <span><i class="far fa-clock"></i> 5D/4N</span>
+                                <span><i class="fas fa-map-marker-alt"></i> Srinagar</span>
+                            </div>
+                            <p class="small text-secondary mb-4">Explore Paradise on Earth with Shikara rides and meadows of Gulmarg.</p>
+                            <a href="booking.html" class="btn-book">Select Package</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6">
+                    <div class="package-card">
+                        <div class="img-container">
+                            <img src="https://images.unsplash.com/photo-1561359313-0639aad49ca6?w=800">
+                            <div class="price-tag">$160</div>
+                        </div>
+                        <div class="card-content">
+                            <h4 class="pkg-title">Varanasi Spiritual</h4>
+                            <div class="pkg-meta">
+                                <span><i class="far fa-clock"></i> 3D/2N</span>
+                                <span><i class="fas fa-map-marker-alt"></i> Ganges</span>
+                            </div>
+                            <p class="small text-secondary mb-4">Connect with the spiritual heartbeat of India in the world's oldest city.</p>
+                            <a href="booking.html" class="btn-book">Select Package</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6">
+                    <div class="package-card">
+                        <div class="img-container">
+                            <img src="img/goldentemple.jpg">
+                            <div class="price-tag">$140</div>
+                        </div>
+                        <div class="card-content">
+                            <h4 class="pkg-title">Amritsar Soul</h4>
+                            <div class="pkg-meta">
+                                <span><i class="far fa-clock"></i> 2D/1N</span>
+                                <span><i class="fas fa-map-marker-alt"></i> Golden Temple</span>
+                            </div>
+                            <p class="small text-secondary mb-4">Peace at the Golden Temple and patriotic energy at the Wagah Border.</p>
+                            <a href="booking.html" class="btn-book">Select Package</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6">
+                    <div class="package-card">
+                        <div class="img-container">
+                            <img src="https://images.unsplash.com/photo-1587474260584-136574528ed5?w=800">
+                            <div class="price-tag">$100</div>
+                        </div>
+                        <div class="card-content">
+                            <h4 class="pkg-title">Delhi Historical</h4>
+                            <div class="pkg-meta">
+                                <span><i class="far fa-clock"></i> 1 Day</span>
+                                <span><i class="fas fa-map-marker-alt"></i> Red Fort</span>
+                            </div>
+                            <p class="small text-secondary mb-4">Journey through Old and New Delhi's rich historical and culinary heritage.</p>
+                            <a href="booking.html" class="btn-book">Select Package</a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer-expanded">
+        <div class="container">
+            <div class="row g-5">
+                <div class="col-lg-4">
+                    <h3 class="fw-bold text-white mb-4">INDIA<span class="text-orange">TOURS</span></h3>
+                    <p class="small mb-4 pe-lg-5">IndiaTours is a premium travel platform dedicated to showcasing the incredible cultural and geographical diversity of India. We prioritize quality, safety, and authentic local experiences.</p>
+                    <div class="d-flex">
+                        <a href="https://github.com/Nitin765kumar" target="_blank" class="social-circle"><i class="fab fa-github"></i></a>
+                        <a href="https://www.linkedin.com/in/nitinkumar25" target="_blank" class="social-circle"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#" class="social-circle"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+
+                <div class="col-6 col-lg-2">
+                    <h5 class="footer-heading">Company</h5>
+                    <a href="index.html" class="footer-link">Home</a>
+                    <a href="destinations.html" class="footer-link">Destinations</a>
+                    <a href="packages.html" class="footer-link">Tour Packages</a>
+                    <a href="contact.html" class="footer-link">Contact Us</a>
+                </div>
+
+                <div class="col-6 col-lg-2">
+                    <h5 class="footer-heading">Support</h5>
+                    <a href="#" class="footer-link">Privacy Policy</a>
+                    <a href="#" class="footer-link">Terms & Conditions</a>
+                    <a href="#" class="footer-link">Booking Guide</a>
+                    <a href="#" class="footer-link">24/7 Support</a>
+                </div>
+
+                <div class="col-lg-4">
+                    <h5 class="footer-heading">Travel Newsletter</h5>
+                    <p class="small mb-4">Subscribe to get exclusive discounts and travel guides directly in your inbox.</p>
+                    <form class="d-flex">
+                        <input type="email" class="form-control newsletter-input" placeholder="Your email address">
+                        <button class="newsletter-btn"><i class="fas fa-paper-plane"></i></button>
+                    </form>
+                </div>
+            </div>
+
+            <hr class="my-5 opacity-10 border-white">
+            
+            <div class="row align-items-center">
+                <div class="col-md-6 text-center text-md-start">
+                    <p class="small mb-0">© 2026 IndiaTours. Developed with  by <span class="text-orange">Nitin Kumar</span></p>
+                </div>
+                <div class="col-md-6 text-center text-md-end mt-3 mt-md-0">
+                    <img src="https://img.icons8.com/color/48/visa.png" width="35" class="me-2" alt="visa">
+                    <img src="https://img.icons8.com/color/48/mastercard.png" width="35" class="me-2" alt="mastercard">
+                    <img src="https://img.icons8.com/color/48/upi.png" width="35" alt="upi">
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

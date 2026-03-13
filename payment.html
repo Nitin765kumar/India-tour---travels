@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secure Checkout | IndiaTours</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --navy-dark: #0a192f;
+            --navy-slate: #112240;
+            --orange-primary: #ff4d00;
+            --text-dim: #8892b0;
+        }
+
+        body { background-color: var(--navy-dark); color: white; font-family: 'Poppins', sans-serif; }
+
+        .payment-container { background: var(--navy-slate); border-radius: 24px; border: 1px solid rgba(255,255,255,0.05); }
+
+        /* Payment Method Tabs */
+        .nav-pills .nav-link {
+            color: var(--text-dim);
+            background: rgba(255,255,255,0.03);
+            border: 1px solid transparent;
+            margin-bottom: 10px;
+            padding: 15px 20px;
+            text-align: left;
+            transition: 0.3s;
+        }
+        .nav-pills .nav-link.active {
+            background: rgba(255, 77, 0, 0.1);
+            color: var(--orange-primary);
+            border-color: var(--orange-primary);
+        }
+
+        /* Card Visualizer */
+        .virtual-card {
+            background: linear-gradient(135deg, #ff7a00, #ff4d00);
+            border-radius: 20px;
+            padding: 30px;
+            height: 220px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+            margin-bottom: 30px;
+            position: relative;
+        }
+
+        /* Form Styling */
+        .form-control, .form-select {
+            background: rgba(10, 25, 47, 0.6);
+            border: 1px solid rgba(255,255,255,0.1);
+            color: white;
+            padding: 12px 15px;
+        }
+        .form-control:focus, .form-select:focus {
+            background: rgba(10, 25, 47, 0.9);
+            border-color: var(--orange-primary);
+            color: white;
+            box-shadow: none;
+        }
+
+        /* UPI Icon Grid */
+        .upi-option {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 12px;
+            padding: 15px;
+            cursor: pointer;
+            text-align: center;
+            transition: 0.3s;
+        }
+        .upi-option:hover, .upi-option.selected {
+            border-color: var(--orange-primary);
+            background: rgba(255, 77, 0, 0.05);
+        }
+
+        /* Processing Loader */
+        #loader {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(10, 25, 47, 0.98);
+            z-index: 10000;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container py-5">
+        <div class="row mb-4">
+            <div class="col-12">
+                <h3 class="fw-bold"><i class="fa-solid fa-shield-halved text-success me-2"></i>Secure Checkout</h3>
+                <p class="text-white-50">Booking Reference: <span class="text-white">IT-2026-8842</span></p>
+            </div>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-lg-8">
+                <div class="payment-container p-4 p-md-5">
+                    <div class="row">
+                        <div class="col-md-4 mb-4">
+                            <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist">
+                                <button class="nav-link active" data-bs-toggle="pill" data-bs-target="#card-pay"><i class="fa-solid fa-credit-card me-2"></i> Card</button>
+                                <button class="nav-link" data-bs-toggle="pill" data-bs-target="#upi-pay"><i class="fa-solid fa-mobile-screen-button me-2"></i> UPI</button>
+                                <button class="nav-link" data-bs-toggle="pill" data-bs-target="#net-pay"><i class="fa-solid fa-building-columns me-2"></i> Net Banking</button>
+                            </div>
+                        </div>
+
+                        <div class="col-md-8">
+                            <div class="tab-content" id="v-pills-tabContent">
+                                
+                                <div class="tab-pane fade show active" id="card-pay">
+                                    <div class="virtual-card">
+                                        <div class="d-flex justify-content-between">
+                                            <div style="width: 50px; height: 35px; background: #ffd700; border-radius: 5px;"></div>
+                                            <i class="fa-brands fa-cc-visa fa-3x opacity-50"></i>
+                                        </div>
+                                        <h4 class="mt-4 ls-2" id="cardNumDisplay">•••• •••• •••• ••••</h4>
+                                        <div class="d-flex justify-content-between mt-4">
+                                            <small class="text-uppercase opacity-75">Holder<br><span id="cardNameDisplay">YOUR NAME</span></small>
+                                            <small class="text-uppercase opacity-75">Expiry<br>MM/YY</small>
+                                        </div>
+                                    </div>
+                                    <form class="payForm">
+                                        <input type="text" id="cardNameInput" class="form-control mb-3" placeholder="Cardholder Name" required>
+                                        <input type="text" id="cardNumInput" class="form-control mb-3" placeholder="Card Number" maxlength="19" required>
+                                        <div class="row g-3">
+                                            <div class="col-6"><input type="text" class="form-control" placeholder="MM/YY" required></div>
+                                            <div class="col-6"><input type="password" class="form-control" placeholder="CVV" required></div>
+                                        </div>
+                                        <button class="btn btn-orange w-100 py-3 mt-4 rounded-pill fw-bold">PAY SECURELY</button>
+                                    </form>
+                                </div>
+
+                                <div class="tab-pane fade" id="upi-pay">
+                                    <h5 class="fw-bold mb-4">Select UPI App</h5>
+                                    <div class="row g-3 mb-4 text-center">
+                                        <div class="col-4"><div class="upi-option"><i class="fa-brands fa-google-pay fa-2x"></i><p class="small mb-0 mt-2">GPay</p></div></div>
+                                        <div class="col-4"><div class="upi-option"><i class="fa-solid fa-p fa-2x"></i><p class="small mb-0 mt-2">PhonePe</p></div></div>
+                                        <div class="col-4"><div class="upi-option"><i class="fa-solid fa-u fa-2x"></i><p class="small mb-0 mt-2">BHIM</p></div></div>
+                                    </div>
+                                    <form class="payForm">
+                                        <label class="small text-white-50 mb-2">Or enter UPI ID</label>
+                                        <input type="text" class="form-control mb-4" placeholder="username@upi" required>
+                                        <button class="btn btn-orange w-100 py-3 rounded-pill fw-bold">VERIFY & PAY</button>
+                                    </form>
+                                </div>
+
+                                <div class="tab-pane fade" id="net-pay">
+                                    <h5 class="fw-bold mb-4">Select your Bank</h5>
+                                    <form class="payForm">
+                                        <select class="form-select mb-4 py-3">
+                                            <option selected disabled>Choose from major banks</option>
+                                            <option>State Bank of India</option>
+                                            <option>HDFC Bank</option>
+                                            <option>ICICI Bank</option>
+                                            <option>Axis Bank</option>
+                                            <option>Kotak Mahindra</option>
+                                        </select>
+                                        <div class="alert bg-navy-dark border-navy-light small text-white-50">
+                                            Note: You will be redirected to your bank's secure login page.
+                                        </div>
+                                        <button class="btn btn-orange w-100 py-3 rounded-pill fw-bold">PROCEED TO BANK</button>
+                                    </form>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4">
+                <div class="payment-container p-4">
+                    <h5 class="fw-bold mb-4">Order Summary</h5>
+                    <div class="d-flex justify-content-between mb-2">
+                        <span class="text-white-50">Destination</span>
+                        <span id="sumDest" class="fw-bold">---</span>
+                    </div>
+                    <div class="d-flex justify-content-between mb-3">
+                        <span class="text-white-50">Travelers</span>
+                        <span id="sumTravelers" class="fw-bold">0</span>
+                    </div>
+                    <hr class="opacity-10">
+                    <div class="d-flex justify-content-between align-items-center mt-3">
+                        <span class="fs-5">Total Amount</span>
+                        <span id="sumTotal" class="fs-4 fw-bold text-orange">₹0</span>
+                    </div>
+                    <div class="mt-4 p-3 bg-navy-dark rounded-3 text-center">
+                        <p class="small text-white-50 mb-0"><i class="fa-solid fa-lock text-success me-2"></i> 256-bit Secure Transaction</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="loader">
+        <div class="spinner-grow text-orange mb-3" role="status"></div>
+        <h5 class="fw-bold">Processing Your Payment</h5>
+        <p class="text-white-50">Validating credentials with your provider...</p>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        // 1. Load Data from URL
+        const params = new URLSearchParams(window.location.search);
+        const travelers = params.get('travelers') || 1;
+        const pkgStr = params.get('package') || "Custom Package|5000";
+        const pkgName = pkgStr.split('|')[0];
+        const pkgPrice = parseInt(pkgStr.split('|')[1]) || 5000;
+        const finalTotal = travelers * pkgPrice;
+
+        document.getElementById('sumDest').innerText = pkgName;
+        document.getElementById('sumTravelers').innerText = travelers;
+        document.getElementById('sumTotal').innerText = "₹" + finalTotal.toLocaleString();
+
+        // 2. Card Visualizer Logic
+        document.getElementById('cardNameInput').addEventListener('input', (e) => {
+            document.getElementById('cardNameDisplay').innerText = e.target.value.toUpperCase() || "YOUR NAME";
+        });
+        document.getElementById('cardNumInput').addEventListener('input', (e) => {
+            let val = e.target.value.replace(/\D/g, '').substring(0,16);
+            val = val != '' ? val.match(/.{1,4}/g).join(' ') : '';
+            e.target.value = val;
+            document.getElementById('cardNumDisplay').innerText = val || "•••• •••• •••• ••••";
+        });
+
+        // 3. Loader & Redirection
+        document.querySelectorAll('.payForm').forEach(form => {
+            form.addEventListener('submit', (e) => {
+                e.preventDefault();
+                document.getElementById('loader').style.display = 'flex';
+                setTimeout(() => {
+                    window.location.href = `confirmation.html?total=${finalTotal}&ref=IT${Math.floor(Math.random()*100000)}`;
+                }, 3000);
+            });
+        });
+
+        // UPI Selection Style
+        document.querySelectorAll('.upi-option').forEach(opt => {
+            opt.addEventListener('click', () => {
+                document.querySelectorAll('.upi-option').forEach(o => o.classList.remove('selected'));
+                opt.classList.add('selected');
+            });
+        });
+    </script>
+</body>
+</html>

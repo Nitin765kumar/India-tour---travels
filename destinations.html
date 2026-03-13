@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Explore Destinations | IndiaTours</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root { --navy-deep: #0a192f; --navy-slate: #112240; --orange: #ff9933; --slate: #8892b0; --light-slate: #ccd6f6; }
+        body { background-color: var(--navy-deep); color: var(--light-slate); font-family: 'Poppins', sans-serif; overflow-x: hidden; }
+        .text-orange { color: var(--orange) !important; }
+        
+        /* --- NAV STYLES --- */
+        .navbar { background: rgba(10, 25, 47, 0.95); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(255, 153, 51, 0.1); }
+        @media (max-width: 991.98px) {
+            .navbar-collapse { background: var(--navy-slate); padding: 25px; border-radius: 15px; margin-top: 10px; border: 1px solid rgba(255, 153, 51, 0.2); }
+        }
+
+        /* --- HEADER SECTION --- */
+        .dest-header { padding: 120px 0 60px; background: radial-gradient(circle at top right, rgba(255, 153, 51, 0.05), transparent); }
+
+        /* --- FILTER & SEARCH STYLES --- */
+        .filter-btn {
+            background: transparent; border: 1px solid var(--orange); color: var(--orange);
+            padding: 8px 22px; border-radius: 50px; font-weight: 500; transition: 0.3s; margin: 5px;
+        }
+        .filter-btn.active, .filter-btn:hover { background: var(--orange); color: var(--navy-deep); }
+        
+        .search-input {
+            background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 153, 51, 0.3);
+            color: white; padding: 10px 20px 10px 45px; border-radius: 50px; width: 100%; transition: 0.3s;
+        }
+        .search-input:focus { border-color: var(--orange); box-shadow: none; outline: none; background: rgba(255, 255, 255, 0.1); color: white; }
+
+        .btn-clear {
+            background: transparent; border: none; color: var(--slate); font-size: 0.85rem; 
+            text-decoration: underline; cursor: pointer; display: none; margin-left: 10px;
+        }
+        .btn-clear:hover { color: var(--orange); }
+
+        /* --- COMPACT UNIFORM CARDS --- */
+        .destination-card-v2 {
+            height: 360px; position: relative; overflow: hidden; border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.05); background: var(--navy-slate); transition: 0.3s;
+        }
+        .destination-card-v2:hover { border-color: rgba(255, 153, 51, 0.4); transform: translateY(-5px); }
+        .destination-card-v2 img { width: 100%; height: 100%; object-fit: cover; transition: 0.6s cubic-bezier(0.4, 0, 0.2, 1); }
+        .destination-card-v2:hover img { transform: scale(1.1); filter: brightness(0.4); }
+
+        .dest-overlay-v2 {
+            position: absolute; inset: 0;
+            background: linear-gradient(to top, rgba(10, 25, 47, 0.95) 10%, transparent 70%);
+            display: flex; flex-direction: column; justify-content: flex-end; padding: 25px;
+        }
+
+        .hover-details {
+            max-height: 0; opacity: 0; overflow: hidden;
+            transition: 0.4s ease-in-out; transform: translateY(20px);
+        }
+
+        .destination-card-v2:hover .hover-details { max-height: 160px; opacity: 1; transform: translateY(0); }
+
+        .btn-view-details {
+            background: var(--orange); color: var(--navy-deep);
+            font-size: 0.8rem; font-weight: 700; padding: 10px 20px;
+            border-radius: 50px; text-decoration: none; display: inline-block;
+            margin-top: 15px; transition: 0.3s;
+        }
+        .btn-view-details:hover { background: #fff; color: var(--navy-deep); }
+
+        /* --- FOOTER --- */
+        .mega-footer { background: #060d1a; border-top: 1px solid rgba(255, 153, 51, 0.3); padding: 80px 0 30px; }
+        .footer-title { color: white; font-weight: 700; margin-bottom: 25px; position: relative; }
+        .footer-title::after { content: ''; position: absolute; left: 0; bottom: -8px; width: 30px; height: 2px; background: var(--orange); }
+        .bio-box { background: rgba(255, 255, 255, 0.03); padding: 20px; border-radius: 12px; border: 1px solid rgba(255, 153, 51, 0.1); }
+        .footer-link { color: var(--slate); text-decoration: none; display: flex; align-items: center; margin-bottom: 12px; transition: 0.3s; }
+        .footer-link i { font-size: 0.7rem; margin-right: 10px; color: var(--orange); transition: 0.3s; }
+        .footer-link:hover { color: white; transform: translateX(5px); }
+        .dev-social-btn {
+            width: 40px; height: 40px; background: var(--navy-slate); color: var(--orange);
+            display: inline-flex; align-items: center; justify-content: center;
+            border-radius: 10px; margin-right: 10px; transition: 0.3s; border: 1px solid rgba(255,153,51,0.1);
+        }
+        .dev-social-btn:hover { background: var(--orange); color: var(--navy-deep); transform: translateY(-5px); }
+    </style>
+</head>
+
+<body>
+
+    <nav class="navbar navbar-expand-lg fixed-top navbar-dark">
+        <div class="container">
+            <a class="navbar-brand fw-bold fs-3" href="index.html">INDIA<span class="text-orange">TOURS</span></a>
+            <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#navContent">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navContent">
+                <ul class="navbar-nav ms-auto align-items-center">
+                    <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+                    <li class="nav-item"><a class="nav-link active fw-bold text-orange" href="#">Destinations</a></li>
+                    <li class="nav-item"><a class="nav-link" href="packages.html">Packages</a></li>
+                    <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
+                    <li class="nav-item ms-lg-3"><a class="btn px-4 rounded-pill fw-bold" href="booking.html" style="background:var(--orange); color:var(--navy-deep);">Book Now</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <header class="dest-header">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-7">
+                    <h6 class="text-orange fw-bold text-uppercase mb-3" style="letter-spacing: 3px;">The Incredible India</h6>
+                    <h1 class="display-4 fw-bold text-white mb-4">Journey Through <span class="text-orange">Cultural Wonders</span></h1>
+                    <p class="lead text-white-50">Discover a mosaic of multicultural experiences. From the Himalayas to the tropical beaches.</p>
+                </div>
+                <div class="col-lg-5 d-none d-lg-block text-center">
+                    <i class="fas fa-map-marked-alt text-orange opacity-25" style="font-size: 15rem;"></i>
+                </div>
+            </div>
+
+            <div class="row mt-5 g-3 align-items-center">
+                <div class="col-lg-8">
+                    <div class="d-flex flex-wrap align-items-center">
+                        <button class="filter-btn active" data-filter="all">All</button>
+                        <button class="filter-btn" data-filter="beach">Beaches</button>
+                        <button class="filter-btn" data-filter="spiritual">Spiritual</button>
+                        <button class="filter-btn" data-filter="mountain">Mountains</button>
+                        <button class="filter-btn" data-filter="heritage">Heritage</button>
+                        <button id="clearFilters" class="btn-clear">Clear All</button>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="position-relative">
+                        <i class="fas fa-search position-absolute text-orange" style="left: 18px; top: 13px;"></i>
+                        <input type="text" id="destSearch" class="search-input" placeholder="Search city name...">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section class="pb-5">
+    <div class="container">
+        <div id="noResults" class="text-center py-5" style="display: none;">
+            <i class="fas fa-search text-orange mb-3" style="font-size: 3rem;"></i>
+            <h3 class="text-white">No Destinations Found</h3>
+            <p class="text-white-50">Try searching for another city or change the category.</p>
+        </div>
+
+        <div class="row g-4" id="destinationGrid">
+            <div class="col-xl-3 col-lg-4 col-md-6 filter-item" data-category="beach">
+                <div class="destination-card-v2">
+                    <img src="https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?q=80&w=800">
+                    <div class="dest-overlay-v2">
+                        <h5 class="fw-bold text-white mb-1">Goa</h5>
+                        <span class="text-orange small fw-bold">$199 • 4 Days</span>
+                        <div class="hover-details">
+                            <p class="small text-white-50 mb-0">Sun, sand, and vibrant Portuguese heritage.</p>
+                            <a href="packages.html" class="btn-view-details">View Details</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-3 col-lg-4 col-md-6 filter-item" data-category="beach">
+                <div class="destination-card-v2">
+                    <img src="https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?q=80&w=800">
+                    <div class="dest-overlay-v2">
+                        <h5 class="fw-bold text-white mb-1">Kerala</h5>
+                        <span class="text-orange small fw-bold">$299 • 6 Days</span>
+                        <div class="hover-details">
+                            <p class="small text-white-50 mb-0">Float through emerald backwaters on a houseboat.</p>
+                            <a href="packages.html" class="btn-view-details">View Details</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-3 col-lg-4 col-md-6 filter-item" data-category="heritage">
+                <div class="destination-card-v2">
+                    <img src="img/agra.jpg">
+                    <div class="dest-overlay-v2">
+                        <h5 class="fw-bold text-white mb-1">Agra</h5>
+                        <span class="text-orange small fw-bold">$150 • 2 Days</span>
+                        <div class="hover-details">
+                            <p class="small text-white-50 mb-0">Witness the marble symphony of the Taj Mahal.</p>
+                            <a href="packages.html" class="btn-view-details">View Details</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-3 col-lg-4 col-md-6 filter-item" data-category="mountain">
+                <div class="destination-card-v2">
+                    <img src="https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?q=80&w=800">
+                    <div class="dest-overlay-v2">
+                        <h5 class="fw-bold text-white mb-1">Manali</h5>
+                        <span class="text-orange small fw-bold">$250 • 5 Days</span>
+                        <div class="hover-details">
+                            <p class="small text-white-50 mb-0">Snow-capped peaks and adventurous trails.</p>
+                            <a href="packages.html" class="btn-view-details">View Details</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-3 col-lg-4 col-md-6 filter-item" data-category="spiritual">
+                <div class="destination-card-v2">
+                    <img src="img/ayodhya.jpg">
+                    <div class="dest-overlay-v2">
+                        <h5 class="fw-bold text-white mb-1">Ayodhya</h5>
+                        <span class="text-orange small fw-bold">$120 • 2 Days</span>
+                        <div class="hover-details">
+                            <p class="small text-white-50 mb-0">Visit the divine Shri Ram Janmabhoomi Temple.</p>
+                            <a href="packages.html" class="btn-view-details">View Details</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-3 col-lg-4 col-md-6 filter-item" data-category="mountain">
+                <div class="destination-card-v2">
+                    <img src="img/kashmir.jpg">
+                    <div class="dest-overlay-v2">
+                        <h5 class="fw-bold text-white mb-1">Kashmir Valley</h5>
+                        <span class="text-orange small fw-bold">$350 • 5 Days</span>
+                        <div class="hover-details">
+                            <p class="small text-white-50 mb-0">Explore paradise on earth and the Dal Lake.</p>
+                            <a href="packages.html" class="btn-view-details">View Details</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-3 col-lg-4 col-md-6 filter-item" data-category="spiritual">
+                <div class="destination-card-v2">
+                    <img src="img/1.jpg">
+                    <div class="dest-overlay-v2">
+                        <h5 class="fw-bold text-white mb-1">Varanasi</h5>
+                        <span class="text-orange small fw-bold">$160 • 3 Days</span>
+                        <div class="hover-details">
+                            <p class="small text-white-50 mb-0">The spiritual heartbeat of the Ganges.</p>
+                            <a href="packages.html" class="btn-view-details">View Details</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-3 col-lg-4 col-md-6 filter-item" data-category="heritage">
+                <div class="destination-card-v2">
+                    <img src="img/06.jpg">
+                    <div class="dest-overlay-v2">
+                        <h5 class="fw-bold text-white mb-1">Jaipur</h5>
+                        <span class="text-orange small fw-bold">$160 • 3 Days</span>
+                        <div class="hover-details">
+                            <p class="small text-white-50 mb-0">Vibrant culture and architecture of the Pink City.</p>
+                            <a href="packages.html" class="btn-view-details">View Details</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div> 
+    </div> 
+</section>
+
+    <footer class="mega-footer">
+        <div class="container">
+            <div class="row g-5">
+                <div class="col-lg-4">
+                    <h4 class="fw-bold text-white mb-4">INDIA<span class="text-orange">TOURS</span></h4>
+                    <div class="bio-box">
+                        <h6 class="text-orange fw-bold small mb-2 text-uppercase">Project Mission</h6>
+                        <p class="small text-white-50 mb-3">
+                            A showcase of India's heritage built with modern web technologies. This platform is part of my journey to master full-stack development.
+                        </p>
+                        <p class="small text-white mb-0"><i class="fas fa-user-circle text-orange me-2"></i><strong>Nitin Kumar</strong></p>
+                        <p class="text-white-50" style="font-size: 0.75rem;">BCA Student | Python Developer</p>
+                    </div>
+                </div>
+
+                <div class="col-lg-2 col-md-4">
+                    <h6 class="footer-title">Navigation</h6>
+                    <a href="index.html" class="footer-link"><i class="fas fa-chevron-right"></i>Home</a>
+                    <a href="destinations.html" class="footer-link"><i class="fas fa-chevron-right"></i>Destinations</a>
+                    <a href="packages.html" class="footer-link"><i class="fas fa-chevron-right"></i>Packages</a>
+                    <a href="contact.html" class="footer-link"><i class="fas fa-chevron-right"></i>Contact Us</a>
+                </div>
+
+                <div class="col-lg-3 col-md-4">
+                    <h6 class="footer-title">Contact Details</h6>
+                    <p class="small text-white-50 mb-2"><i class="fas fa-map-marker-alt text-orange me-2"></i> Ayodhya, Uttar Pradesh, India</p>
+                    <p class="small text-white-50 mb-2"><i class="fas fa-envelope text-orange me-2"></i> contact@studywithnitin.com</p>
+                    <p class="small text-white-50"><i class="fas fa-phone-alt text-orange me-2"></i> +91 0000-000-000</p>
+                </div>
+
+                <div class="col-lg-3 col-md-4">
+                    <h6 class="footer-title">Follow The Journey</h6>
+                    <p class="small text-white-50 mb-4">Stay updated with my latest technical projects and travel updates.</p>
+                    <div class="d-flex">
+                        <a href="https://github.com/Nitin765kumar" target="_blank" class="dev-social-btn"><i class="fab fa-github"></i></a>
+                        <a href="https://www.linkedin.com/in/nitinkumar25" target="_blank" class="dev-social-btn"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="https://www.youtube.com/@nitinkumar8487" target="_blank" class="dev-social-btn"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <hr class="border-white opacity-10 my-5">
+            <div class="row align-items-center">
+                <div class="col-md-6 text-center text-md-start">
+                    <p class="small text-white-50 mb-0">© 2026 IndiaTours. Engineered by Nitin Kumar.</p>
+                </div>
+                <div class="col-md-6 text-center text-md-end mt-3 mt-md-0">
+                    <p class="small text-white-50 mb-0">Privacy Policy | Terms of Service</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        const searchInput = document.getElementById('destSearch');
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        const items = document.querySelectorAll('.filter-item');
+        const noResults = document.getElementById('noResults');
+        const clearBtn = document.getElementById('clearFilters');
+
+        function filterDestinations() {
+            const query = searchInput.value.toLowerCase();
+            const activeCategory = document.querySelector('.filter-btn.active').getAttribute('data-filter');
+            let foundCount = 0;
+
+            // Show Clear All button if anything is changed
+            clearBtn.style.display = (query !== "" || activeCategory !== 'all') ? 'inline-block' : 'none';
+
+            items.forEach(item => {
+                const title = item.querySelector('h5').textContent.toLowerCase();
+                const category = item.getAttribute('data-category');
+                const matchesSearch = title.includes(query);
+                const matchesCategory = (activeCategory === 'all' || category === activeCategory);
+
+                if (matchesSearch && matchesCategory) {
+                    item.style.display = 'block';
+                    foundCount++;
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+            noResults.style.display = (foundCount === 0) ? 'block' : 'none';
+        }
+
+        searchInput.addEventListener('input', filterDestinations);
+
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                filterBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                filterDestinations();
+            });
+        });
+
+        clearBtn.addEventListener('click', () => {
+            searchInput.value = "";
+            filterBtns.forEach(b => b.classList.remove('active'));
+            document.querySelector('[data-filter="all"]').classList.add('active');
+            filterDestinations();
+        });
+    </script>
+</body>
+</html>
