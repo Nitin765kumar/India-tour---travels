@@ -11,7 +11,7 @@ This project was developed as part of my learning journey in **web development**
 You can visit the live website here:
 
 🔗 **Live Website:**  
-(Coming Soon)
+https://nitin765kumar.github.io/India-tour---travels/
 
 > After hosting the website, add the deployed link here.
 
