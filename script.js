@@ -1,66 +1,72 @@
-// DARK MODE
+document.addEventListener("DOMContentLoaded", function () {
+    document.body.classList.add("reveal-ready");
 
-const toggleBtn = document.getElementById("theme-toggle");
+    const revealElements = document.querySelectorAll("[data-reveal]");
 
-if(toggleBtn){
+    function revealOnScroll() {
+        revealElements.forEach(function (element) {
+            const elementTop = element.getBoundingClientRect().top;
+            const windowHeight = window.innerHeight;
 
-toggleBtn.addEventListener("click",function(){
+            if (elementTop < windowHeight - 100) {
+                element.classList.add("active");
+            }
+        });
+    }
 
-let html=document.documentElement;
+    revealOnScroll();
+    window.addEventListener("scroll", revealOnScroll);
 
-if(html.getAttribute("data-bs-theme")==="light"){
-html.setAttribute("data-bs-theme","dark");
-}else{
-html.setAttribute("data-bs-theme","light");
-}
+    const searchBtn = document.getElementById("searchBtn");
+    const searchDest = document.getElementById("searchDest");
+    const searchPackage = document.getElementById("searchPackage");
 
-});
+    if (searchBtn && searchDest && searchPackage) {
+        searchBtn.addEventListener("click", function () {
+            const dest = searchDest.value.toLowerCase().trim();
+            const pkg = searchPackage.value;
 
-}
+            if (!dest && pkg === "all") {
+                window.location.href = "packages.html";
+                return;
+            }
 
+            if (dest.includes("agra") || dest.includes("taj")) {
+                window.location.href = "packages.html#agra";
+            } else if (dest.includes("goa")) {
+                window.location.href = "packages.html#goa";
+            } else if (dest.includes("kerala")) {
+                window.location.href = "packages.html#kerala";
+            } else if (dest.includes("manali")) {
+                window.location.href = "packages.html#manali";
+            } else if (dest.includes("kashmir")) {
+                window.location.href = "packages.html#kashmir";
+            } else {
+                window.location.href = "packages.html";
+            }
+        });
+    }
 
-// NAVBAR SCROLL EFFECT
+    const newsletterBtn = document.getElementById("newsletterBtn");
+    const newsletterInput = document.getElementById("newsletterEmail");
 
-window.addEventListener("scroll",function(){
+    if (newsletterBtn && newsletterInput) {
+        newsletterBtn.addEventListener("click", function () {
+            const email = newsletterInput.value.trim();
 
-let navbar=document.querySelector(".navbar");
+            if (!email || !email.includes("@")) {
+                alert("Please enter a valid email address.");
+                return;
+            }
 
-if(window.scrollY>50){
-navbar.classList.add("shadow");
-}else{
-navbar.classList.remove("shadow");
-}
+            newsletterBtn.innerHTML = "Subscribed";
+            newsletterBtn.style.background = "#3eac07";
 
-});
-
-// animated counter
-
-const counters = document.querySelectorAll('.counter');
-const speed = 200;
-
-counters.forEach(counter => {
-
-const updateCount = () => {
-
-const target = +counter.getAttribute('data-target');
-const count = +counter.innerText;
-
-const increment = target / speed;
-
-if(count < target){
-
-counter.innerText = Math.ceil(count + increment);
-
-setTimeout(updateCount,10);
-
-}else{
-
-counter.innerText = target + "+";
-
-}
-
-};
-
-updateCount();
-
+            setTimeout(function () {
+                newsletterBtn.innerHTML = '<i class="fa-solid fa-paper-plane"></i>';
+                newsletterBtn.style.background = "";
+                newsletterInput.value = "";
+            }, 2000);
+        });
+    }
 });
